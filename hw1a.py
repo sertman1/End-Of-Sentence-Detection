@@ -60,27 +60,28 @@ class EOSClassifier:
             # We've given you some features you might want to experiment with below.
             # You should be able to quickly get a score above 0.95!
             
-            1 if word_p1.islower() else 0,
-            1 if word_p1.lower() in self.unlikely_proper_nouns else 0,
-            1 if word_m1.lower() in self.sentence_internal else 0,
-            1 if word_m1.islower() else 0,
-            1 if word_m1.lower() in self.titles else 0,
-            1 if word_m1.lower() in self.timeterms else 0,
-
-            1 if any(char.isdigit for char in word_p1) else 0,
-            1 if any(char == "*" for char in word_m1) else 0,
-            1 if len(word_m1) == 1 else 0,
-            
             len(word_m1),
             len(word_m2),
             len(word_m3),
             len(word_p1),
             len(word_p2),
             len(word_3),
+            1 if len(word_m1) == 1 else 0,
+
+            1 if word_p1.islower() else 0, # new sentences almost always start with capital
+            1 if word_m1.islower() else 0,
             1 if word_p1[0].isupper() else 0,
-            1 if word_m2[0].isupper() else 0,
             1 if word_m1[0].isupper() else 0,
+            1 if word_m2[0].isupper() else 0, # two word sentences are rare
+
+            1 if word_p1.lower() in self.unlikely_proper_nouns else 0, # unlikely to not start sentence
+            1 if word_m1.lower() in self.sentence_internal else 0,
+            1 if word_m1.lower() in self.titles else 0, # most likely period following offical title -> not EOS
+            1 if word_m1.lower() in self.timeterms else 0,
+
             1 if any(char == "." for char in word_m1) else 0,
+            1 if any(char.isdigit for char in word_p1) else 0,
+            1 if any(char == "*" for char in word_m1) else 0,
 
             # list of proper/personal names
             # single letters / or 2 letters not EOS, C may be celsius
