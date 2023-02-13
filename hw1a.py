@@ -42,8 +42,9 @@ class EOSClassifier:
         # and 0 if not.
 
         features = [  # TODO: add features here
-            left_reliable,
-            right_reliable,
+            # left_reliable,
+            1 if left_reliable == 1 else 0,
+            # right_reliable,
             num_spaces,
             1 if word_m1 in self.abbrevs else 0,
 
@@ -69,7 +70,7 @@ class EOSClassifier:
 
             1 if any(char.isdigit for char in word_p1) else 0,
             1 if any(char == "*" for char in word_m1) else 0,
-            1 if len(word_m1) == 1 or len(word_m1) == 2 else 0,
+            1 if len(word_m1) == 1 else 0,
             
             len(word_m1),
             len(word_m2),
@@ -81,8 +82,6 @@ class EOSClassifier:
             1 if word_m2[0].isupper() else 0,
             1 if word_m1[0].isupper() else 0,
             1 if any(char == "." for char in word_m1) else 0,
-            1 if any(char == "%" for char in word_m1) else 0,
-            1 if any(char == "-" for char in word_m1) else 0
 
             # list of proper/personal names
 
