@@ -65,6 +65,7 @@ class EOSClassifier:
             1 if word_m1.lower() in self.sentence_internal else 0,
             1 if word_m1.islower() else 0,
             1 if word_m1.lower() in self.titles else 0,
+            1 if word_m1.lower() in self.timeterms else 0,
 
             1 if any(char.isdigit for char in word_p1) else 0,
             1 if any(char == "*" for char in word_m1) else 0,
