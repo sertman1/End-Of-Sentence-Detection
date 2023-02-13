@@ -1,0 +1,67 @@
+Aiming to reduce as much entropy as possible through my model, I needed to
+test out various features and how they impacted my baseline performance of
+4011 / 4500  0.8913333333333333 on development data. Generally, as I attempted
+new features, those that improved my development data results I kept and those
+that did not I commented out, testing them again later on before feeling 
+entirely satisifed to remove them from consideration.
+
+When designing my model, I decided to include the major features first:
+the lengths of the three words to the left and the right, whether or not
+the words immediately to the left or to the right were upper case etc. The
+logic for the upper case, for example, is that in the vast majority of EOS
+cases, the following word will be upper case, as logically it starts a sentence
+(things like <p> and <``> complicate this definition in much fewer cases). This
+feature alone brought large improvements to results–slightly more than 0.01.
+
+The other crucial feature of the algorithm came when realizing the power
+of the classes provided. I ultimately made use of all the classes. An example
+of this is checking if the word to the right is an unlikely_proper_noun.
+Including this feature lead to significant improvement, which is logical,
+since those proper_nouns typically start new sentences (namely when capitalized).
+Another major benefit to results from the classes came by checking if the word to
+the left was a title: if so, almost always was it not EOS, since the period marker
+simply was a compliment to the title (e.g., Mr.). 
+
+I intend to test out some additional features that intuitively would lead to
+some improved results. For one, I would like to find a large data base of 
+proper/personal names. In doing so, I could check for more specific cases.
+For example, if the first word to the right is a capital initial, in some
+instances, this could mean it is a middle initial. Thus, with this corpus
+of personal names, I could see if the second name to the left and if the
+first name to the right were personal names, and if so, conclude that the
+one letter to the left is actually a middle name and most likely not EOS.
+
+There are additional instances of one letter that could warrant further 
+testing and lead to improved results. For example, 'C.' very well could mean
+celsius or be a middle initial, or it could be being used in a larger list 
+of items (i.e., 'C. [third item in list]'). 
+
+Other complications could come when looking at abbreviations like "Ft."
+and "Dr." A lot of the times, these are being used as titles and thus
+would not constitute an EOS (e.g., "Doctor .... decided that"). However,
+they could also mean feet, or drive, and thus very well be an EOS in
+certain cases ("We climbed up 50 ft.") Optimizing the model for these
+cases could result in small improvements, however while testing them
+I saw negligible improvements:
+  While experimenting with different, more complex features, I discovered that
+a lot of the time, my performance tended to go down ever so slightly, making
+it not worth inclusion into the model. For example, on my development data, 
+I noticed when using the --error tag, my model decided incorrectly on EOS
+instances where the first word to the right was ``. I added a feature to
+check for this, leading to the average result 4482 / 4500  0.996, which was
+the same before adding the feature. Checking the error file, the model now 
+was correct on all but one instance of the ``, but progress was offset by 
+new errors. Submitting it to gradescope, my performance went from 
+0.9979228162238986 to 0.997266863452498, dropping my leaderboard position from 
+16 to 21. It was a very slight change to the model, and yet this relative 
+performance drop indicates how sometimes a simplier and more compact model 
+is preferred. This lead to me only needing to include 23 features to attain
+strong results, which was suprising, as I assumed naturally many more would
+be required.
+
+Another example of when I ran into a similar situation was when attempting 
+to add the feature: 1 if left_reliable == 1 else 0. This was inspired from 
+the fact that 3:1 of the times when the left_reliable is 1, it was an EOS. 
+While on the development data this helped me to attain a best result of 
+4487 / 4500 0.9971111111111111, on the Gradescope evaluation my performance
+went down, making it not worth an inclusion in my final model.

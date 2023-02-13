@@ -41,10 +41,9 @@ class EOSClassifier:
         # For example, our 4th feature has a value of 1 if word_m1 is an abbreviation,
         # and 0 if not.
 
-        features = [  # TODO: add features here
-            # left_reliable,
-            1 if left_reliable == 1 else 0,
-            # right_reliable,
+        features = [  
+            left_reliable,
+            right_reliable,
             num_spaces,
             1 if word_m1 in self.abbrevs else 0,
 
@@ -84,7 +83,6 @@ class EOSClassifier:
             1 if any(char == "." for char in word_m1) else 0,
 
             # list of proper/personal names
-
             # single letters / or 2 letters not EOS, C may be celsius
         ]
 
