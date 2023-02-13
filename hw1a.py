@@ -45,7 +45,9 @@ class EOSClassifier:
             left_reliable,
             right_reliable,
             num_spaces,
-            1 if word_m1 in self.abbrevs else 0
+            1 if word_m1 in self.abbrevs else 0,
+
+            # BASELINE: 4011 / 4500  0.8913333333333333
 
             # ==========TODO==========
             # Make a note of the score you'll get with
@@ -57,9 +59,23 @@ class EOSClassifier:
             # Hint: Simpler features will get you further than complex ones, at first.
             # We've given you some features you might want to experiment with below.
             # You should be able to quickly get a score above 0.95!
+            
+            1 if word_p1.islower() else 0,
+            1 if word_p1.lower() in self.unlikely_proper_nouns else 0,
+            1 if word_m1.lower() in self.sentence_internal else 0,
+            1 if word_m1.islower() else 0,
+            1 if word_m1.lower() in self.titles else 0,
 
-            # len(word_m1),
-            # 1 if word_p1.isupper() else 0
+            1 if any(char.isdigit for char in word_p1) else 0,
+            1 if any(char == "*" for char in word_m1) else 0,
+            1 if len(word_m1) == 1 else 0,
+            
+            len(word_m1),
+            len(word_p1),
+            1 if word_p1[0].isupper() else 0,
+            1 if word_m2[0].isupper() else 0,
+            1 if word_m1[0].isupper() else 0,
+            1 if any(char == "." for char in word_m1) else 0,
         ]
 
         return features
