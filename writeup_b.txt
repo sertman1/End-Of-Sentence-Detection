@@ -1,0 +1,8 @@
+When determing features, I first relied heavily on the example provided
+in the homework document. I identified the different type of segment
+labels, such as PTEXT and QUOTED, and found patterns (and thus features)
+that distinguished one from the other.
+
+For example, with development data, when classifying by line, the start
+code yielded a result of 555 / 722  0.7686980609418282 and classifying by
+segment, 53 / 78  0.6794871794871795.

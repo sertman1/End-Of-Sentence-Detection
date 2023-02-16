@@ -7,7 +7,7 @@ entirely satisifed to remove them from consideration.
 
 When designing my model, I decided to include the major features first:
 the lengths of the three words to the left and the right, whether or not
-the words immediately to the left or to the right were upper case etc. The
+the words immediately to the left or to the right were upper/lower case etc. The
 logic for the upper case, for example, is that in the vast majority of EOS
 cases, the following word will be upper case, as logically it starts a sentence
 (things like <p> and <``> complicate this definition in much fewer cases). This
@@ -40,10 +40,9 @@ Other complications could come when looking at abbreviations like "Ft."
 and "Dr." A lot of the times, these are being used as titles and thus
 would not constitute an EOS (e.g., "Doctor .... decided that"). However,
 they could also mean feet, or drive, and thus very well be an EOS in
-certain cases ("We climbed up 50 ft.") Optimizing the model for these
-cases could result in small improvements, however while testing them
-I saw negligible improvements:
-  While experimenting with different, more complex features, I discovered that
+certain cases ("We climbed up 50 ft.") 
+
+While experimenting with different, more complex features, I discovered that
 a lot of the time, my performance tended to go down ever so slightly, making
 it not worth inclusion into the model. For example, on my development data, 
 I noticed when using the --error tag, my model decided incorrectly on EOS
