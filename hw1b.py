@@ -18,7 +18,7 @@ class SegmentClassifier:
             len(text.strip()),
             len(words),
             1 if '>' in words else 0,
-            # text.count(' '),
+            text.count(' '),
             # sum(1 if w.isupper() else 0 for w in words)
         ]
         return features
