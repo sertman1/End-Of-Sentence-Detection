@@ -5,4 +5,44 @@ that distinguished one from the other.
 
 For example, with development data, when classifying by line, the start
 code yielded a result of 555 / 722  0.7686980609418282 and classifying by
-segment, 53 / 78  0.6794871794871795.
+segment, 53 / 78  0.6794871794871795. Noticing that NNHEAD segments 
+started with words followed by a colon, I created a feature that counts
+how many words in a given segment were in this format. With this, I saw
+some improvement-589 / 722  0.8157894736842105 and 54 / 78
+0.6923076923076923–convicing me to keep the feature.
+
+Other features that led to improvements included the ratio of two or one
+letter words to total words in a block. The reason for this was because
+PTEXT is much more susceptible to having one and two letter words and
+thus this helped to distinguish it from other types of blocks. 
+
+Another useful feature was calculating the center position of the text
+and then seeing if this fell within 3 spaces of the ideal center, 40
+(since these announcements typically were 80 spaces long). This helped
+to more clearly distinguish headers and even addresses from other segements
+like quotes and NNHEAD.
+
+Another massive improvement came when identifying whether or not a line
+started with a word and a colon, such as "From:" or "Lines:" Words formatted
+like these almost always started NNHEAD segments, and so this feature
+helped to distinguish them more from the rest.
+
+A final feature that led to notable improvement was calculating the ratio
+of numbers to overall words. In doing so, this helped to better identify
+addresses, since phone numbers and address numbers and area codes coupled
+with the small-sized nature of an address lead to high ratios.
+
+Another feature I added was the ratio of words to numbers in the text,
+having noticed that segments such as quotes and ptext had very few numbers.
+Originally, my results were worse. Before removing the feature, I switched
+the function to instead compute the ratio of numbers to words in the text,
+ultimately improving my results, leading to its inclusion: 
+591 / 722  0.8185595567867036 and 56 / 78  0.717948717948718.
+
+I also tested various scikit-learn models, starting with a Support Vector
+Machine. Compared to my baseline, the SVM performed worse, attaining the
+results 521 / 722  0.721606648199446 and 39 / 78  0.5. The documentation
+stated they preform better with additional features, so I added some more
+before deciding the DecisionTreeClassifier was prefered. Ultimatley,
+the RandomForestClassifier performed best for me.
+
